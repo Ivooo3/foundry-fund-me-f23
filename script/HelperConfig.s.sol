@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: MIT
-
-// 1. Deploy mocks when we are on a local anvil chain
-// 2. Keep track of the contract address across different chains
-// Sepolia eht/usd
-// Mainnet eth/usd
-
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 import {MockV3Aggregator} from "../test/mocks/MockV3Aggregator.sol";
@@ -17,7 +11,7 @@ contract HelperConfig is Script {
     int256 public constant INITIAL_PRICE = 2000e8;
 
     struct NetworkConfig {
-        address priceFeed; //ETH/USD price feed address
+        address priceFeed;
     }
 
     constructor() {
@@ -28,20 +22,6 @@ contract HelperConfig is Script {
         } else {
             activeNetworkConfig = getAnvilEthConfig();
         }
-    }
-
-    function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
-        NetworkConfig memory sepoliaConfig = NetworkConfig({
-            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
-        });
-        return sepoliaConfig;
-    }
-
-    function getMainnetEthConfig() public pure returns (NetworkConfig memory) {
-        NetworkConfig memory ethConfig = NetworkConfig({
-            priceFeed: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
-        });
-        return ethConfig;
     }
 
     function getAnvilEthConfig() public returns (NetworkConfig memory) {
@@ -60,5 +40,19 @@ contract HelperConfig is Script {
             priceFeed: address(mockPriceFeed)
         });
         return anvilConfig;
+    }
+
+    function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
+        NetworkConfig memory sepoliaConfig = NetworkConfig({
+            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
+        });
+        return sepoliaConfig;
+    }
+
+    function getMainnetEthConfig() public pure returns (NetworkConfig memory) {
+        NetworkConfig memory ethConfig = NetworkConfig({
+            priceFeed: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+        });
+        return ethConfig;
     }
 }

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-
-pragma solidity ^0.8.19;
+pragma solidity 0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
@@ -15,7 +14,6 @@ contract FundMeTest is Test {
     uint256 constant GAS_PRICE = 1;
 
     function setUp() external {
-        // fundMe = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
         DeployFundMe deployFundMe = new DeployFundMe();
         fundMe = deployFundMe.run();
         vm.deal(USER, STARTING_BALACE);
@@ -67,15 +65,8 @@ contract FundMeTest is Test {
         uint256 startingOwnerBalance = fundMe.getOwner().balance;
         uint256 startingFundMeBalance = address(fundMe).balance;
 
-        //uint256 gasStart = gasleft();
-
-        // vm.txGasPrice(GAS_PRICE);
         vm.prank(fundMe.getOwner());
         fundMe.withdraw();
-
-        //uint256 gasEnd = gasleft();
-        //uint256 gasUsed = (gasStart - gasEnd) * tx.gasprice;
-        //console.log(gasUsed);
 
         uint256 endingOwnerBalance = fundMe.getOwner().balance;
         uint256 endingFundMeBalance = address(fundMe).balance;
@@ -88,7 +79,7 @@ contract FundMeTest is Test {
 
     function testWithdrawFromMultipleFunders() public funded {
         //from solidity 0.8.0 we cannot cast address to uint256,
-        //instead we cast to uint160 cuz it have same amount of bytes
+        //instead we cast to uint160 which have same amount of bytes
         uint160 numberOfFunders = 10;
         uint160 startingFundedIndex = 1;
         for (uint160 i = startingFundedIndex; i < numberOfFunders; i++) {
